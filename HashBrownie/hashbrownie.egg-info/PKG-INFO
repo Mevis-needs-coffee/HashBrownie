@@ -1,7 +1,0 @@
-Metadata-Version: 2.4
-Name: hashbrownie
-Version: 0.1.0
-Summary: A small hash identifier - identify cryptographic hash types by shape
-Requires-Python: >=3.10
-Requires-Dist: rich>=13.0.0
-Dynamic: requires-python
