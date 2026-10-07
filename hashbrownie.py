@@ -95,6 +95,17 @@ HEX_LENGTH_RULES: dict[int, list[str]] = {
 }
 
 
+def _print_banner() -> None:
+    """Print ASCII art banner"""
+    banner_text = r"""██╗  ██╗ █████╗ ███████╗██╗  ██╗    ██████╗ ██████╗  ██████╗ ██╗    ██╗███╗   ██╗██╗███████╗
+██║  ██║██╔══██╗██╔════╝██║  ██║    ██╔══██╗██╔══██╗██╔═══██╗██║    ██║████╗  ██║██║██╔════╝
+███████║███████║███████╗███████║    ██████╔╝██████╔╝██║   ██║██║ █╗ ██║██╔██╗ ██║██║█████╗  
+██╔══██║██╔══██║╚════██║██╔══██║    ██╔══██╗██╔══██╗██║   ██║██║███╗██║██║╚██╗██║██║██╔══╝  
+██║  ██║██║  ██║███████║██║  ██║    ██████╔╝██║  ██║╚██████╔╝╚███╔███╔╝██║ ╚████║██║███████╗
+╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝    ╚═════╝ ╚═╝  ╚═╝ ╚═════╝  ╚══╝╚══╝ ╚═╝  ╚═══╝╚═╝╚══════╝"""
+    console = Console()
+    console.print(f"[bold cyan]{banner_text}[/bold cyan]\n")
+
 _MYSQL5_HEX_BODY_LENGTH = 40
 _MYSQL5_TOTAL_LENGTH = _MYSQL5_HEX_BODY_LENGTH + 1
 
@@ -377,6 +388,7 @@ def main() -> int:
     parser = _build_argument_parser()
     args = parser.parse_args()
     console = Console()
+    _print_banner()
 
     candidates = identify(args.hash)
 
