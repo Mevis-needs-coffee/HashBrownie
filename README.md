@@ -1,6 +1,6 @@
 # HashBrownie
 
-![HashBrownie ASCII](hashbrownie.png)
+![HashBrownie ASCII](Hash_image.png)
 
 A fast, lightweight command-line hash identifier that analyzes cryptographic hash strings and determines their likely algorithm by examining prefixes, length, and character sets.
 
@@ -79,7 +79,7 @@ just format
 
 ## Screenshot
 
-![HashBrownie in action](hashbrownie.png)
+![HashBrownie in action](Hash_image.png)
 
 ## Supported Hash Types
 
