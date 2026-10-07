@@ -1,0 +1,10 @@
+README.md
+hashbrownie.py
+pyproject.toml
+setup.py
+hashbrownie.egg-info/PKG-INFO
+hashbrownie.egg-info/SOURCES.txt
+hashbrownie.egg-info/dependency_links.txt
+hashbrownie.egg-info/entry_points.txt
+hashbrownie.egg-info/requires.txt
+hashbrownie.egg-info/top_level.txt
