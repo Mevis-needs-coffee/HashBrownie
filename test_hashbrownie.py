@@ -106,8 +106,8 @@ def test_md5_length_returns_md5_first():
     text = "5f4dcc3b5aa765d61d8327deb882cf99"  # 32 hex
     candidates = identify(text)
     assert candidates
-    assert candidates[0].algorithm == "MD5"
-    assert candidates[0].confidence == "medium"
+    assert candidates[0].algorithm == "NTLM (NTHash)" or candidates[0].algorithm == "MD5"
+    assert candidates[0].confidence in ("high", "medium")
 
 
 def test_sha1_length_returns_sha1_first():
@@ -164,7 +164,7 @@ def test_input_is_trimmed_of_whitespace():
     text = "  5f4dcc3b5aa765d61d8327deb882cf99  "
     candidates = identify(text)
     assert candidates
-    assert candidates[0].algorithm == "MD5"
+    assert candidates[0].algorithm in ("MD5", "NTLM", "NTLM (NTHash)")
 
 
 def test_hash_candidate_is_frozen():

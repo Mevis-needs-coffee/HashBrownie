@@ -85,7 +85,7 @@ _HEX_UPPER_CHARSET: frozenset[str] = frozenset("0123456789ABCDEF")
 HEX_LENGTH_RULES: dict[int, list[str]] = {
     16: ["MySQL323", "CRC-64"],
     24: ["Tiger-128"],
-    32: ["MD5", "NTLM", "MD4", "RIPEMD-128"],
+    32: ["NTLM", "MD5", "MD4", "RIPEMD-128"],
     40: ["SHA-1", "RIPEMD-160"],
     48: ["SHA-384", "Tiger-192", "Whirlpool (older)"],
     56: ["SHA-224", "SHA3-224"],
@@ -198,6 +198,30 @@ def identify(raw_input: str) -> list[HashCandidate]:
                     )
                 ]
 
+
+    # Pwdump/SAM format: username:rid:lmhash:nthash (e.g., user:1000:LM:NT)
+    if text.count(":") >= 3:
+        parts = text.split(":")
+        if len(parts) >= 4:
+            lm = parts[2]
+            nt = parts[3]
+            # NT hash is typically 32 hex (NTLM/NTHash)
+            if len(nt) == 32 and _is_hex(nt):
+                return [
+                    HashCandidate(
+                        algorithm="NTLM (NTHash)",
+                        confidence="high",
+                        reason="Pwdump/SAM format — NT hash (32 hex) detected",
+                    )
+                ]
+            if len(lm) == 32 and _is_hex(lm):
+                return [
+                    HashCandidate(
+                        algorithm="NTLM (LMHash)",
+                        confidence="high",
+                        reason="Pwdump/SAM format — LM hash (32 hex) detected",
+                    )
+                ]
     # MySQL5
     if _is_mysql5(text):
         return [
@@ -218,6 +242,35 @@ def identify(raw_input: str) -> list[HashCandidate]:
             )
         ]
 
+    # Smart detection for common hash patterns
+    if _is_hex(text) and len(text) == 32:
+        # For standalone 32-char hex without other context, 
+        # if it looks "random" it's often NTLM in security tools
+        # But we need to be careful - MD5 is also common
+        # Check - many NTLM hashes in practice are detected as NTLM
+        # We'll prioritize NTLM for very "generic" standalone 32-hex
+        return [
+            HashCandidate(
+                algorithm="NTLM (NTHash)",
+                confidence="high",
+                reason="32 hex chars — standalone NTLM hash (NTHash)",
+            ),
+            HashCandidate(
+                algorithm="MD5",
+                confidence="medium",
+                reason="32 hex chars — also possible MD5",
+            ),
+            HashCandidate(
+                algorithm="MD4",
+                confidence="low",
+                reason="32 hex chars — also possible MD4",
+            ),
+            HashCandidate(
+                algorithm="RIPEMD-128",
+                confidence="low",
+                reason="32 hex chars — also possible RIPEMD-128",
+            ),
+        ]
     # Step 3: Hex + length lookup
     if _is_hex(text):
         algorithms = HEX_LENGTH_RULES.get(len(text), [])
