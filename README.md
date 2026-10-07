@@ -37,3 +37,8 @@ just lint
 - `pyproject.toml` - Dependencies and config
 - `justfile` - Development commands
 - `install.sh` - One-shot setup
+
+
+## Screenshot
+
+![HashBrownie in action](hashbrownie.png)
