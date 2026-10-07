@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# HashBrownie - Hash identifier CLI tool
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
+
+if command -v uv >/dev/null 2>&1; then
+    uv run python hashbrownie.py "$@"
+else
+    python3 hashbrownie.py "$@"
+fi

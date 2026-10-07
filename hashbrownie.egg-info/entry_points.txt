@@ -1,0 +1,2 @@
+[console_scripts]
+hashbrownie = hashbrownie:main
